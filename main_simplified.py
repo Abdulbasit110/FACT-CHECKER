@@ -134,31 +134,140 @@ async def process_claims(claims, context):
     return fact_checks
 
 async def main():
-    st.header("1. Upload Audio or Enter Text")
-    
-    # Text input option
-    text_input = st.text_area("Or enter text directly:", height=150)
-    
-    # Audio upload option
-    uploaded_file = st.file_uploader("Choose a WAV file", type="wav")
-    if uploaded_file is not None:
-        st.audio(uploaded_file, format='audio/wav')
-    
-    if st.button("Process"):
-        with st.spinner("Processing..."):
-            # Determine the source of text
-            if uploaded_file is not None:
-                st.session_state.transcribed_text = await transcribe_audio(uploaded_file)
-                st.write("Audio transcribed successfully!")
-            elif text_input:
-                st.session_state.transcribed_text = text_input
-            
-            if st.session_state.transcribed_text:
-                st.session_state.claims = await extract_claims(st.session_state.transcribed_text)
-                st.session_state.fact_checks = await process_claims(st.session_state.claims, st.session_state.transcribed_text)
-                st.success("Analysis complete!")
+    st.markdown("## 🎯 AI-Powered Fact-Checker")
+    st.caption("Verify claims from audio or text in real-time using AI + Web Search")
+
+    with st.sidebar:
+        st.header("⚙️ Settings")
+        st.markdown("Customize fact-checking behavior below.")
+        sentiment_display = st.checkbox("Show Sentiment Meter", value=True)
+
+    tab1, tab2, tab3 = st.tabs(["🔊 Input", "📋 Claims", "✅ Fact Check Results"])
+
+    with tab1:
+        st.subheader("📥 Upload Audio or Enter Text")
+        text_input = st.text_area("Or paste your text here:", height=150)
+
+        uploaded_file = st.file_uploader("Upload a WAV audio file", type="wav")
+        if uploaded_file is not None:
+            st.audio(uploaded_file, format='audio/wav')
+
+        if st.button("🔍 Analyze Now"):
+            with st.spinner("Transcribing and extracting claims..."):
+                if uploaded_file:
+                    st.session_state.transcribed_text = await transcribe_audio(uploaded_file)
+                    st.success("✅ Audio transcribed successfully!")
+                elif text_input:
+                    st.session_state.transcribed_text = text_input
+                else:
+                    st.error("❗ Please upload audio or enter some text.")
+                    return
+
+                if st.session_state.transcribed_text:
+                    st.session_state.claims = await extract_claims(st.session_state.transcribed_text)
+                    st.session_state.fact_checks = await process_claims(st.session_state.claims, st.session_state.transcribed_text)
+                    st.success("🎉 Fact-checking complete!")
+
+    with tab2:
+        if st.session_state.transcribed_text:
+            st.subheader("📝 Transcribed Text")
+            st.text_area("Transcribed Text", st.session_state.transcribed_text, height=150)
+
+        if st.session_state.claims:
+            st.subheader("📋 Extracted Claims")
+            for idx, claim in enumerate(st.session_state.claims):
+                st.markdown(f"**{idx+1}.** {claim}")
+
+    with tab3:
+        if st.session_state.fact_checks:
+            st.subheader("✅ Fact Check Results")
+            for i, (claim, result, speaker) in enumerate(st.session_state.fact_checks):
+                with st.expander(f"Claim {i+1}: {claim}", expanded=True):
+                    verification = result.get("Verification", "N/A")
+                    confidence = result.get("Confidence", "N/A")
+                    explanation = result.get("Explanation", "N/A")
+                    bias = result.get("Bias", "N/A")
+                    sources = result.get("Sources", "N/A")
+                    categories = result.get("Categories", [])
+                    sentiment = result.get("Sentiment", 0)
+
+                    color_icon = ":green_circle:" if verification == "Verified" else ":orange_circle:" if verification == "Partially Verified" else ":red_circle:"
+                    st.markdown(f"**Verification:** {color_icon} {verification}")
+                    st.markdown(f"**Confidence:** `{confidence}`")
+                    st.markdown(f"**Explanation:** {explanation}")
+                    st.markdown(f"**Potential Bias:** `{bias}`")
+                    st.markdown(f"**Sources:** {sources}")
+                    if categories:
+                        st.markdown(f"**Categories:** `{', '.join(categories)}`")
+
+                    if sentiment_display:
+                        st.markdown("#### 🧠 Sentiment-Based Truth Meter")
+                        fig = go.Figure(go.Indicator(
+                            mode="gauge+number",
+                            value=sentiment_to_percentage(sentiment),
+                            title={'text': "Truth Meter"},
+                            gauge={
+                                'axis': {'range': [0, 100]},
+                                'bar': {'color': "green" if sentiment > 0.6 else "orange" if sentiment > 0.3 else "red"},
+                                'steps': [
+                                    {'range': [0, 33], 'color': "lightgray"},
+                                    {'range': [33, 66], 'color': "gray"},
+                                    {'range': [66, 100], 'color': "darkgray"},
+                                ],
+                                'threshold': {
+                                    'line': {'color': "red", 'width': 4},
+                                    'thickness': 0.75,
+                                    'value': 50
+                                }
+                            }
+                        ))
+                        st.plotly_chart(fig, key=f"truth_meter_{i}0")
+
+            # Overall stats
+            st.markdown("---")
+            st.subheader("📊 Summary Statistics")
+            verified_count, partially_verified_count, not_verified_count = get_verification_counts(st.session_state.fact_checks)
+            st.markdown("**Verification Breakdown**")
+            fig = go.Figure(data=[
+                go.Pie(labels=['Verified', 'Partially Verified', 'Not Verified'],
+                       values=[verified_count, partially_verified_count, not_verified_count],
+                       marker=dict(colors=["#28a745", "#ffc107", "#dc3545"]))
+            ])
+            st.plotly_chart(fig, key="verification_stats_pie1")
+
+            st.subheader("🔍 Detected Topics")
+            current_topics = context_builder.get_current_topics()
+            if current_topics:
+                st.markdown(f"**Topics:** `{', '.join(current_topics)}`")
             else:
-                st.error("No text to analyze. Please upload an audio file or enter text.")
+                st.info("No topics detected yet.")
+
+
+    # st.header("1. Upload Audio or Enter Text")
+    
+    # # Text input option
+    # text_input = st.text_area("Or enter text directly:", height=150)
+    
+    # # Audio upload option
+    # uploaded_file = st.file_uploader("Choose a WAV file", type="wav")
+    # if uploaded_file is not None:
+    #     st.audio(uploaded_file, format='audio/wav')
+    
+    # if st.button("Process"):
+    #     with st.spinner("Processing..."):
+    #         # Determine the source of text
+    #         if uploaded_file is not None:
+    #             st.session_state.transcribed_text = await transcribe_audio(uploaded_file)
+    #             st.write("Audio transcribed successfully!")
+    #         elif text_input:
+    #             st.session_state.transcribed_text = text_input
+            
+    #         if st.session_state.transcribed_text:
+    #             st.session_state.claims = await extract_claims(st.session_state.transcribed_text)
+    #             st.session_state.fact_checks = await process_claims(st.session_state.claims, st.session_state.transcribed_text)
+    #             st.success("Analysis complete!")
+    #         else:
+    #             st.error("No text to analyze. Please upload an audio file or enter text.")
 
     if st.session_state.transcribed_text:
         st.header("2. Transcribed Text and Claims")
@@ -200,7 +309,7 @@ async def main():
                                 'line': {'color': "red", 'width': 4},
                                 'thickness': 0.75,
                                 'value': 50}}))
-                st.plotly_chart(fig, key=f"truth_meter_{i}")
+                st.plotly_chart(fig, key=f"truth_meter_{i}1")
 
         # Overall statistics
         st.header("4. Overall Statistics")
@@ -208,7 +317,7 @@ async def main():
         
         fig = go.Figure(data=[go.Pie(labels=['Verified', 'Partially Verified', 'Not Verified'], 
                                     values=[verified_count, partially_verified_count, not_verified_count])])
-        st.plotly_chart(fig, key="verification_stats_pie")
+        st.plotly_chart(fig, key="verification_stats_pie2")
 
         # Display current topics
         st.header("5. Current Topics")
