@@ -4,10 +4,33 @@ This guide will help you use the AI-Powered Fact-Checker to verify claims in tex
 
 ## Starting the Application
 
+### Option 1: Running Locally
+
 1. Open your terminal/command prompt
 2. Navigate to the project directory
 3. Run the command: `python -m streamlit run main_simplified.py`
 4. The application will open in your web browser
+
+### Option 2: Running with Docker (Recommended)
+
+#### For Windows Users:
+1. Make sure Docker Desktop is installed and running
+2. Navigate to the project directory
+3. Run `run.bat start` to start the application
+4. To stop the application, run `run.bat stop`
+
+#### For Mac/Linux Users:
+1. Make sure Docker is installed and running
+2. Navigate to the project directory
+3. Run `./run.sh start` to start the application
+4. To stop the application, run `./run.sh stop`
+
+#### Manual Docker Setup:
+1. Navigate to the project directory
+2. Run `docker-compose up -d` to start
+3. Run `docker-compose down` to stop
+
+The application will be available at http://localhost:8501 in your web browser.
 
 ## Using the Application
 

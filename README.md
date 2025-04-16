@@ -14,11 +14,12 @@ A streamlined tool for fact-checking claims in text or audio debates using AI.
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.8+ (for local installation)
 - Groq API key
 - Internet connection for web searching
+- Docker (optional, for containerized deployment)
 
-### Installation
+### Option 1: Local Installation
 
 1. Clone the repository:
    ```
@@ -37,11 +38,42 @@ A streamlined tool for fact-checking claims in text or audio debates using AI.
    SPACY_MODEL=en_core_web_sm
    ```
 
-### Running the Application
+4. Install spaCy language model:
+   ```
+   python -m spacy download en_core_web_sm
+   ```
 
-Run the simplified version of the application:
+5. Run the application:
+   ```
+   python -m streamlit run main_simplified.py
+   ```
+
+### Option 2: Docker Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/AI-Powered-Debate-Fact-Checker.git
+   cd AI-Powered-Debate-Fact-Checker
+   ```
+
+2. Create a `.env` file with your API key:
+   ```
+   GROQ_API_KEY=your_groq_api_key_here
+   SPACY_MODEL=en_core_web_sm
+   ```
+
+3. Build and run with Docker Compose:
+   ```
+   docker-compose up -d
+   ```
+
+4. Access the application at http://localhost:8501
+
+### Stopping the Docker Container
+
+To stop the application:
 ```
-python -m streamlit run main_simplified.py
+docker-compose down
 ```
 
 ## How to Use
@@ -52,10 +84,14 @@ python -m streamlit run main_simplified.py
 4. Review the extracted claims and fact-check results
 5. Explore the visualizations showing verification statistics
 
+For more detailed instructions, see [USER_GUIDE.md](USER_GUIDE.md).
+
 ## Technologies Used
 
 - Streamlit: Web interface
 - Groq API: AI-powered text analysis
 - spaCy: Natural language processing
 - Plotly: Interactive visualizations
+- Docker: Containerization
+
 
