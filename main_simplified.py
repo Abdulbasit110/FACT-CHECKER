@@ -31,8 +31,8 @@ except:
 context_builder = EnhancedContextBuilder()
 
 # Streamlit page configuration
-st.set_page_config(page_title="AI-Powered Fact-Checker (Simplified)", page_icon="🎙️", layout="wide")
-st.title("AI-Powered Fact-Checker (Simplified)")
+st.set_page_config(page_title="AI-Powered Fact-Checker", page_icon="🎙️", layout="wide")
+st.title("AI-Powered Fact-Checker")
 st.caption("This is a simplified version without speaker diarization")
 
 # Initialize session state variables
@@ -70,7 +70,7 @@ async def extract_claims(text):
                 {"role": "system", "content": "You are an AI assistant that extracts clear, concise, and fact-checkable claims from text."},
                 {"role": "user", "content": prompt}
             ],
-            model="llama-3.1-70b-versatile",
+            model="llama-3.1-8b-instant",
             temperature=0.1,
             max_tokens=500,
             top_p=1,
@@ -200,7 +200,7 @@ async def main():
                                 'line': {'color': "red", 'width': 4},
                                 'thickness': 0.75,
                                 'value': 50}}))
-                st.plotly_chart(fig)
+                st.plotly_chart(fig, key=f"truth_meter_{i}")
 
         # Overall statistics
         st.header("4. Overall Statistics")
@@ -208,7 +208,7 @@ async def main():
         
         fig = go.Figure(data=[go.Pie(labels=['Verified', 'Partially Verified', 'Not Verified'], 
                                     values=[verified_count, partially_verified_count, not_verified_count])])
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, key="verification_stats_pie")
 
         # Display current topics
         st.header("5. Current Topics")

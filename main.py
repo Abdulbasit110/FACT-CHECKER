@@ -69,7 +69,7 @@ async def extract_claims(text):
                 {"role": "system", "content": "You are an AI assistant that extracts clear, concise, and fact-checkable claims from text."},
                 {"role": "user", "content": prompt}
             ],
-            model="llama-3.1-70b-versatile",
+            model="llama-3.1-8b-instant",
             temperature=0.1,
             max_tokens=500,
             top_p=1,

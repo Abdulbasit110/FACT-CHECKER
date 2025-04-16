@@ -8,7 +8,7 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 DIARIZATION_MODEL = "pyannote/speaker-diarization"
 SPACY_MODEL = "en_core_web_sm"
-LLM_MODEL = "llama-3.1-70b-versatile"
+LLM_MODEL = "llama-3.1-8b-instant"
 
 # Utility functions
 def format_web_results(web_results):
