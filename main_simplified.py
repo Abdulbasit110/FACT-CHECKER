@@ -141,6 +141,9 @@ async def main():
         st.header("⚙️ Settings")
         st.markdown("Customize fact-checking behavior below.")
         sentiment_display = st.checkbox("Show Sentiment Meter", value=True)
+        st.markdown("---")
+        st.markdown("Developed with ❤️ for DEV DAY'25")
+        st.markdown("Contact: [Abdul Basit](mailto:abdulbasit4408944@gmail.com)")
 
     tab1, tab2, tab3 = st.tabs(["🔊 Input", "📋 Claims", "✅ Fact Check Results"])
 
