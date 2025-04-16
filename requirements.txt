@@ -1,6 +1,6 @@
 streamlit==1.22.0
 SpeechRecognition==3.10.0
-groq==0.4.9
+groq==0.22.0
 python-dotenv==1.0.0
 nltk==3.8.1
 scikit-learn==1.2.2

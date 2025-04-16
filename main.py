@@ -31,8 +31,8 @@ diarization_pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", 
 context_builder = EnhancedContextBuilder()
 
 # Streamlit page configuration
-st.set_page_config(page_title="AI-Powered Debate Fact-Checker", page_icon="🎙️", layout="wide")
-st.title("AI-Powered Debate Fact-Checker")
+st.set_page_config(page_title="AI-Powered Fact-Checker", page_icon="🎙️", layout="wide")
+st.title("AI-Powered Fact-Checker")
 
 # Initialize session state variables
 if 'transcribed_text' not in st.session_state:

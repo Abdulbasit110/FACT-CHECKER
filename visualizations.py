@@ -101,7 +101,7 @@ def generate_summary(fact_checks):
     unverified_claims = [claim for claim, result, _ in fact_checks if result.get("Verification") == "NOT VERIFIED"]
     
     summary = f"""
-    Debate Summary:
+    Summary:
     
     Total claims analyzed: {len(fact_checks)}
     Verified claims: {len(verified_claims)}

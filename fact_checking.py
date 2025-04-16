@@ -48,7 +48,7 @@ async def fact_check_with_groq(groq_client, statement, context, web_results, cat
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a highly knowledgeable AI assistant specializing in quick, real-time fact-checking for debates, with access to recent web information and debate context.",
+                    "content": "You are a highly knowledgeable AI assistant specializing in quick, real-time fact-checking for news, with access to recent web information and debnewsate context.",
                 },
                 {
                     "role": "user",

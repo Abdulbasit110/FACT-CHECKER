@@ -23,11 +23,11 @@
   <a href="#license">License</a>
 </p>
 
-The AI-Powered Debate Fact-Checker is a cutting-edge tool designed to enhance the quality and accuracy of public discourse. By leveraging advanced AI and NLP technologies, this application provides real-time fact-checking, sentiment analysis, and topic tracking for live debates.
+The AI-Powered Fact-Checker is a cutting-edge tool designed to enhance the quality and accuracy of public discourse. By leveraging advanced AI and NLP technologies, this application provides real-time fact-checking, sentiment analysis, and topic tracking for news.
 
 ### 🌟 Key Features
 
-- **Real-time Audio Processing**: Transcribe live debate audio and identify speakers.
+- **Real-time Audio Processing**: Transcribe live audio and identify speakers.
 - **Automated Claim Extraction**: Identify and isolate fact-checkable claims from transcribed text.
 - **AI-Powered Fact-Checking**: Utilize the Groq API for rapid, intelligent fact verification.
 - **Interactive Visualizations**: 
@@ -35,8 +35,8 @@ The AI-Powered Debate Fact-Checker is a cutting-edge tool designed to enhance th
   - Network graph of speakers and topics
   - Truth meter for sentiment analysis
 - **Efficient Web Search**: Gather relevant information to support fact-checking with caching and rate limiting.
-- **Context-Aware Analysis**: Maintain debate context for more accurate fact-checking and topic tracking.
-- **Summary Generation**: Produce concise summaries of debate key points and verification results.
+- **Context-Aware Analysis**: Maintain context for more accurate fact-checking and topic tracking.
+- **Summary Generation**: Produce concise summaries of key points and verification results.
 
 ## 🚀 Getting Started
 
@@ -77,12 +77,12 @@ Navigate to the provided local URL in your web browser to access the application
 
 ## 📊 How It Works
 
-1. **Audio Upload**: Users upload a debate audio file (WAV format).
+1. **Audio Upload**: Users upload a audio file (WAV format).
 2. **Transcription**: The audio is transcribed and processed for speaker diarization.
 3. **Claim Extraction**: AI identifies fact-checkable claims from the transcribed text.
 4. **Fact-Checking**: Each claim is verified using web searches and AI analysis.
 5. **Visualization**: Results are displayed with interactive charts and graphs.
-6. **Summary**: A concise summary of the debate and fact-checking results is generated.
+6. **Summary**: A concise summary of the news and fact-checking results is generated.
 
 ## 🛠️ Technologies Used
 
