@@ -32,7 +32,7 @@ context_builder = EnhancedContextBuilder()
 
 # Streamlit page configuration
 st.set_page_config(page_title="AI-Powered Fact-Checker", page_icon="🎙️", layout="wide")
-st.title("AI-Powered Fact-Checker")
+st.title("CHECK MATE : AI-Powered Fact-Checker")
 st.caption("This is a simplified version without speaker diarization")
 
 # Initialize session state variables
